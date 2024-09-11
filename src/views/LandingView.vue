@@ -200,7 +200,7 @@ export default {
           });
           this.orderDialog = false
           this.car = {}
-          this.getCars()
+          this.getCarByDate()
         }
       },
       async getCars(){

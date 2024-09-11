@@ -1,4 +1,4 @@
-# Backend: Vue, Vuetify, Vite
+# Frontend: Vue, Vuetify, Vite
 ---
 Rental Mobil
 Hendri Heryanto
