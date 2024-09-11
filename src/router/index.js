@@ -11,6 +11,7 @@ import OrderHistoryView from '@/views/OrderHistoryView.vue';
 import DataCarView from '@/views/dashboard/DataCarView.vue';
 import DataOrderView from '@/views/dashboard/DataOrderView.vue';
 import UserManagementView from '@/views/dashboard/UserManagementView.vue';
+import DataCustomerView from '@/views/dashboard/DataCustomerView.vue';
 
 const routes = [
     { 
@@ -41,6 +42,7 @@ const routes = [
             { path: '', component: DataCarView, meta: { checkAuth: true, adminRoute: true }, },
             { path: 'data-car', component: DataCarView, meta: { checkAuth: true, adminRoute: true }, },
             { path: 'data-order', component: DataOrderView, meta: { checkAuth: true, adminRoute: true }, },
+            { path: 'data-customer', component: DataCustomerView, meta: { checkAuth: true, adminRoute: true }, },
             { path: 'user-management', component: UserManagementView, meta: { checkAuth: true, adminRoute: true }, },
         ]
     }

@@ -156,7 +156,7 @@ import Swal from 'sweetalert2';
         if (response) {
           this.createEditDialog = false;
           Swal.fire({
-            text: 'Data berhasil dibuat.',
+            text: 'Data berhasil disimpan.',
             icon: 'success',
             customClass: {
               confirmButton: 'confirm-button-class',

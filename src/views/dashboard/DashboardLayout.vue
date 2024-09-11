@@ -22,6 +22,7 @@
       <v-list>
         <v-list-item title="Data Mobil" to="/dashboard/data-car"></v-list-item>
         <v-list-item title="Data Rental" to="/dashboard/data-order"></v-list-item>
+        <v-list-item title="Data Pelanggan" to="/dashboard/data-customer"></v-list-item>
         <v-list-item title="User Management" to="/dashboard/user-management"></v-list-item>
       </v-list>
     </v-navigation-drawer>

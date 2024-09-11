@@ -1,10 +1,10 @@
 <template>
     <v-container>
       <v-card>
-        <v-card-title>Data Mobil</v-card-title>
+        <v-card-title>Data Pelanggan</v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="12" md="8"><v-btn class="bg-green" @click="openDialog">Tambah</v-btn></v-col>
+            <v-col cols="12" md="8"></v-col>
             <v-col cols="12" md="4">
               <v-text-field
               v-model="search"
@@ -49,10 +49,14 @@
       <v-form v-model="isFormValid" @submit.prevent="createEditItem">
         <v-card prepend-icon="mdi-account" :title="item_id ? 'Edit' : 'Tambah'">
           <v-card-text>
-            <div class="text-subtitle-1 text-medium-emphasis pt-2">Email</div>
-            <v-text-field density="compact" placeholder="Email" variant="outlined" v-model="email" hide-details="auto" :rules="[rules.required, rules.email]" />
-            <div class="text-subtitle-1 text-medium-emphasis pt-2">Password</div>
-            <v-text-field density="compact" placeholder="Password" variant="outlined" v-model="password" hide-details="auto" :rules="!item_id ? [rules.required] : []"/>
+            <div class="text-subtitle-1 text-medium-emphasis pt-2">Name</div>
+            <v-text-field density="compact" placeholder="Name" variant="outlined" v-model="name" hide-details="auto" :rules="[rules.required]" />
+            <div class="text-subtitle-1 text-medium-emphasis pt-2">Alamat</div>
+            <v-textarea density="compact" placeholder="Alamat" variant="outlined" v-model="address" hide-details="auto" :rules="[rules.required]" />
+            <div class="text-subtitle-1 text-medium-emphasis pt-2">No. Telp</div>
+            <v-text-field density="compact" placeholder="No. Telp" variant="outlined" v-model="phone_number" hide-details="auto" :rules="[rules.required]" />
+            <div class="text-subtitle-1 text-medium-emphasis pt-2">No. SIM</div>
+            <v-text-field type="number" density="compact" placeholder="No. SIM" variant="outlined" v-model="license_number" hide-details="auto" :rules="[rules.required]" />
           </v-card-text>
           <v-divider></v-divider>
           
@@ -77,7 +81,10 @@ import Swal from 'sweetalert2';
         itemsPerPage: 5,
         headers: [
           { title: 'ID', key: 'id', align: 'end' },
-          { title: 'Email', key: 'email', align: 'end' },
+          { title: 'Nama', key: 'name', align: 'end' },
+          { title: 'Alamat', key: 'address', align: 'end' },
+          { title: 'No. Telepon', key: 'phone_number', align: 'end' },
+          { title: 'No. SIM', key: 'license_number', align: 'end' },
           { title: 'Actions', key: 'actions', sortable: false },
         ],
         serverItems: [],
@@ -90,9 +97,12 @@ import Swal from 'sweetalert2';
           required: value => !!value || 'Required',
           email: value => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'Invalid Email Address'
         },
-        email: '',
-        password: '',
+        name: '',
+        address: '',
+        phone_number: '',
+        license_number: '',
         item_id: null,
+
       }
     },
     methods: {
@@ -107,7 +117,7 @@ import Swal from 'sweetalert2';
           sortOrder: sortOrder,
           search: this.search,
         }
-        const response = await api.getUsersAdmin(params)
+        const response = await api.getCustomersAdmin(params)
         this.serverItems = response.items.data
         this.totalItems = response.total
         this.loading = false
@@ -115,16 +125,26 @@ import Swal from 'sweetalert2';
       openDialog(item = null) {
         
         if (item != null) {
-          this.email = item.email;
-          this.password = item.password;
+          this.name = item.name
+          this.address = item.address
+          this.phone_number = item.phone_number
+          this.license_number = item.license_number
           this.item_id = item.id;
         }
         this.createEditDialog = true;
       },
+      handleInputFile(event){
+        this.image = event.target.files[0];
+      },
       async createEditItem(){
         if (!this.isFormValid) return;
-        const payload = this.item_id ? { email: this.email } : { email: this.email, password: this.password };
-        const response = this.item_id ? await api.updateUsersAdmin(payload, this.item_id) : await api.createUsersAdmin(payload);
+        const payload = {
+          name: this.name,
+          address: this.address,
+          phone_number: this.phone_number,
+          license_number: this.license_number,
+        }
+        const response = await api.updateCustomersAdmin(payload, this.item_id);
         
         if (response) {
           this.createEditDialog = false;
@@ -141,7 +161,7 @@ import Swal from 'sweetalert2';
       },
       async deleteItem(item){
         Swal.fire({
-          text: `Apakah kamu yakin akan menghapus ${item.email}?`,
+          text: `Apakah kamu yakin akan menghapus ${item.brand}?`,
           icon: 'warning',
           showCancelButton: true,
           customClass: {
@@ -150,7 +170,7 @@ import Swal from 'sweetalert2';
           }
         }).then(async (result) => {
           if (result.isConfirmed) {
-            const response = await api.deleteUsersAdmin(item.id);
+            const response = await api.deleteCustomersAdmin(item.id);
             location.reload()
           }
         })

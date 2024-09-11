@@ -256,6 +256,70 @@ const api = {
             return null;
         }
     },
+    getCustomersAdmin: async (params) => {
+        try {
+            const token = auth.getToken();
+            if (!token) return true;
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+                params: params,
+            };
+            const result = await axios.get(BASE_URL+'/admin/customers', config);
+            if (result.data.status === 'success') {
+                return result.data.data;
+            }
+            return null;
+        } catch (error) {
+            alert(error.response && error.response.data ? error.response.data.message : error)
+            console.error(error)
+            if (error.status == 401) {
+                storage.remove("user")
+            }
+            return null;
+        }
+    },
+    updateCustomersAdmin: async (payload, id) => {
+        const token = auth.getToken();
+        if (!token) return true;
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        try {
+            const result = await axios.post(BASE_URL+'/admin/customers/'+id, payload, config);
+            if (result.data.status === 'success') {
+                return true;
+            }
+            return null;
+        } catch (error) {
+            alert(error.response && error.response.data ? error.response.data.message : error)
+            console.error(error)
+            if (error.status == 401) {
+                storage.remove("user")
+            }
+            return null;
+        }
+    },
+    deleteCustomersAdmin: async (id) => {
+        const token = auth.getToken();
+        if (!token) return true;
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        try {
+            const result = await axios.delete(BASE_URL+'/admin/customers/'+id, config);
+            if (result.data.status === 'success') {
+                return true;
+            }
+            return null;
+        } catch (error) {
+            alert(error.response.data ? error.response.data.message : error)
+            console.error(error)
+            if (error.status == 401) {
+                storage.remove("user")
+            }
+            return null;
+        }
+    },
 
     updateUser: async (payload, id) => {
         const token = auth.getToken();
